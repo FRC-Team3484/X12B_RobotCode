@@ -13,7 +13,7 @@
 #include "units/velocity.h"
 #include "units/angular_velocity.h"
 
-#include "ctre/phoenix/motorcontrol/can/WPI_TalonFX.h"
+#include "ctre/phoenix/motorcontrol/can/WPI_TalonSRX.h"
 
 #include "frc/drive/DifferentialDrive.h"
 #include "frc/kinematics/DifferentialDriveWheelSpeeds.h"
@@ -27,17 +27,17 @@
 #include "networktables/NetworkTable.h"
 #include "networktables/NetworkTableValue.h"
 
-class X22_Drivetrain
+class X13B_Drivetrain
 {
 public:
-	X22_Drivetrain(units::length::inch_t trackwidth,
+	X13B_Drivetrain(units::length::inch_t trackwidth,
 				units::velocity::feet_per_second_t MaxVel,
 				units::angular_velocity::degrees_per_second_t MaxRotVel,
 				std::tuple<int, int> LeftIDs, std::tuple<int, int> RightIDs,
 				SC::SC_Solenoid shifter);
 
 
-	~X22_Drivetrain();
+	~X13B_Drivetrain();
 
 	void Drive(double Throttle, double Rotation, bool ShiftOverride, bool EBrake);
 
@@ -52,7 +52,7 @@ private:
 
 	void _UpdateDashboard();
 	void _InitDashboard();
-	void _InitMotor(ctre::phoenix::motorcontrol::can::WPI_TalonFX* Motor, bool Invert, ctre::phoenix::motorcontrol::can::WPI_TalonFX* Master = NULL);
+	void _InitMotor(ctre::phoenix::motorcontrol::can::WPI_TalonSRX* Motor, bool Invert, ctre::phoenix::motorcontrol::can::WPI_TalonSRX* Master = NULL);
 
 	//SC::SC_DifferentialDrive *drive;
 	frc::DifferentialDrive              *drive;
@@ -62,8 +62,8 @@ private:
 	frc::DifferentialDriveWheelSpeeds   ws_PV, ws_PVf;//, ws_chassis;
 	frc::ChassisSpeeds                  cs_PV;
 
-	ctre::phoenix::motorcontrol::can::WPI_TalonFX *Motor_Left_Master, *Motor_Left_Slave;
-	ctre::phoenix::motorcontrol::can::WPI_TalonFX *Motor_Right_Master, *Motor_Right_Slave;
+	ctre::phoenix::motorcontrol::can::WPI_TalonSRX *Motor_Left_Master, *Motor_Left_Slave;
+	ctre::phoenix::motorcontrol::can::WPI_TalonSRX *Motor_Right_Master, *Motor_Right_Slave;
 
 	double throttleDemand, rotationDemand, throttleCoeff;
 	bool inHighGear, inLowGear;

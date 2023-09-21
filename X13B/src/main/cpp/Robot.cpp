@@ -3,10 +3,37 @@
 // the WPILib BSD license file in the root directory of this project.
 
 #include "Robot.h"
+#include "Constants.h"
+
+#include "FRC3484_Lib/utils/SC_Functions.h"
+
+#include "frc/PneumaticsModuleType.h"
+#include <frc/smartdashboard/SmartDashboard.h>
 
 #include <frc2/command/CommandScheduler.h>
+#include "ctre/phoenix/motorcontrol/Faults.h"
 
-void Robot::RobotInit() {}
+#include "networktables/NetworkTableInstance.h"
+void Robot::RobotInit() {
+// Clear out the network table
+	this->_nt_table = nt::NetworkTableInstance::GetDefault().GetTable("X22");
+	// std::vector<std::string> entries = _nt_table->GetKeys();
+	// for(unsigned int i = 0; i < entries.size(); i++)
+	// {
+	// 	_nt_table->(entries.at(i));
+	// }
+
+	// Initialize Controllers
+  GP1_Driver = new XboxController(C_DRIVER_USB);
+	BB_GameDevice = new XboxController(C_GAMEDEV_USB);
+
+  
+	_drivetrain = new X13_Drivetrain(C_X22_TRACK_WIDTH, 14_fps, 90_deg_per_s,
+						std::make_tuple<int, int>(C_FX_LEFT_MASTER, C_FX_LEFT_SLAVE),
+						std::make_tuple<int, int>(C_FX_RIGHT_MASTER, C_FX_RIGHT_SLAVE),
+						SC::SC_Solenoid{C_PCM, frc::PneumaticsModuleType::REVPH, C_DRIVE_SOL});
+
+}
 
 void Robot::RobotPeriodic() {
   frc2::CommandScheduler::GetInstance().Run();
