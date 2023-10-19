@@ -14,9 +14,13 @@
 #include "ctre/phoenix/motorcontrol/Faults.h"
 
 #include "networktables/NetworkTableInstance.h"
+
+using namespace frc;
+using namespace SC;
+
 void Robot::RobotInit() {
 // Clear out the network table
-	this->_nt_table = nt::NetworkTableInstance::GetDefault().GetTable("X22");
+	this->_nt_table = nt::NetworkTableInstance::GetDefault().GetTable("X13B");
 	// std::vector<std::string> entries = _nt_table->GetKeys();
 	// for(unsigned int i = 0; i < entries.size(); i++)
 	// {
@@ -24,14 +28,11 @@ void Robot::RobotInit() {
 	// }
 
 	// Initialize Controllers
-  GP1_Driver = new XboxController(C_DRIVER_USB);
-	BB_GameDevice = new XboxController(C_GAMEDEV_USB);
-
+  GP1_Driver = new frc::XboxController(C_DRIVER_USB);
   
-	_drivetrain = new X13_Drivetrain(C_X22_TRACK_WIDTH, 14_fps, 90_deg_per_s,
+	_drivetrain = new X13B_Drivetrain(C_X22_TRACK_WIDTH,
 						std::make_tuple<int, int>(C_FX_LEFT_MASTER, C_FX_LEFT_SLAVE),
-						std::make_tuple<int, int>(C_FX_RIGHT_MASTER, C_FX_RIGHT_SLAVE),
-						SC::SC_Solenoid{C_PCM, frc::PneumaticsModuleType::REVPH, C_DRIVE_SOL});
+						std::make_tuple<int, int>(C_FX_RIGHT_MASTER, C_FX_RIGHT_SLAVE));
 
 }
 
