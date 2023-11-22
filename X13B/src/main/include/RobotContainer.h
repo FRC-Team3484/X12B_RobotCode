@@ -25,16 +25,15 @@ class RobotContainer {
 
   frc2::CommandPtr GetAutonomousCommand();
 
-
+// usage of {} vs () is to avoid most vexing parse
   X13B_Drivetrain _drivetrain{
     C_FX_BL_MASTER,
     C_FX_BR_MASTER,
-    TRACKWIDTH
+    28_in
   };
 
 
  private:
-    inch_t TRACKWIDTH = static_cast<inch_t>(28);
   // Replace with CommandPS4Controller or CommandJoystick if needed
   // frc2::CommandXboxController m_driverController{
   //     OperatorConstants::kDriverControllerPort};
