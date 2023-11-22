@@ -3,27 +3,16 @@
 // the WPILib BSD license file in the root directory of this project.
 
 #pragma once
-
-#include <optional>
-
 #include <frc/TimedRobot.h>
-#include <frc2/command/CommandPtr.h>
-
 #include "RobotContainer.h"
+#include "Constants.h"
+#include <FRC3484_Lib/utils/SC_Datatypes.h>
+#include <FRC3484_Lib/utils/SC_Functions.h>
 
-#include "subsystems/Drivetrain.h"
-
+// Controller Inputs
 #include <frc/XboxController.h>
+#include <frc/PS4Controller.h>
 #include <frc/Joystick.h>
-#include <frc/smartdashboard/SmartDashboard.h>
-#include <frc/filter/Debouncer.h>
-#include <frc/PneumaticHub.h>
-#include <frc/PowerDistribution.h>
-
-#include <frc/Timer.h>
-
-#include <networktables/NetworkTableEntry.h>
-#include <networktables/NetworkTableValue.h>
 
 
 class Robot : public frc::TimedRobot {
@@ -32,42 +21,30 @@ class Robot : public frc::TimedRobot {
   void RobotPeriodic() override;
   void DisabledInit() override;
   void DisabledPeriodic() override;
-  void DisabledExit() override;
   void AutonomousInit() override;
   void AutonomousPeriodic() override;
-  void AutonomousExit() override;
   void TeleopInit() override;
   void TeleopPeriodic() override;
-  void TeleopExit() override;
-  void TestInit() override;
   void TestPeriodic() override;
-  void TestExit() override;
+  void SimulationInit() override;
+  void SimulationPeriodic() override;
 
  private:
+  // Have it empty by default so that if testing teleop it
+  // doesn't have undefined behavior and potentially crash.
   std::optional<frc2::CommandPtr> m_autonomousCommand;
 
+  SC::SC_Range<double> Throttle_Range_Normal = {-C_DRIVE_MAX_DEMAND_MID, C_DRIVE_MAX_DEMAND_MID};
+  SC::SC_Range<double> Throttle_Range_Fine = {-C_DRIVE_MAX_DEMAND_FINE, C_DRIVE_MAX_DEMAND_FINE};
+  SC::SC_Range<double> Throttle_Range_High = {-C_DRIVE_MAX_DEMAND_HIGH, C_DRIVE_MAX_DEMAND_HIGH};
+
+  double X_Demand, Z_Demand;
+
+  RobotContainer X13B;
+
+  frc::XboxController *GP1_Driver;
   RobotContainer m_container;
 
-	std::shared_ptr<nt::NetworkTable> _nt_table;
+  
 
-	frc::PneumaticHub *pch;
-	frc::PowerDistribution *pdp;
-
-	X13B_Drivetrain *_drivetrain;
-
-	SC::SC_Range<double> Throttle_Range_Normal;
-	SC::SC_Range<double> Throttle_Range_Fine;
-
-#if defined(DRIVE_MODE_ARCADE) || defined(DRIVE_MODE_ARCADE)
-	double throttleDemand, turnDemand;
-#elif defined(DRIVE_MODE_TANK)
-	double rightDemand, leftDemand;
-#endif
-	bool forceLowGear;
-
-	frc::XboxController *GP1_Driver; // GP = Gamepad
-	frc::XboxController *BB_GameDevice;
-#ifndef CLIMB_CONTROL_SPERATE
-	frc::Joystick       *JS_Climb; 
-#endif
 };
