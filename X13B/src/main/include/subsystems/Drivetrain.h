@@ -31,6 +31,9 @@ class X13B_Drivetrain {
         frc::DifferentialDriveKinematics  *_ddriveKinematics;
         frc::DifferentialDrive *_drive;
         frc::DifferentialDrive::WheelSpeeds wsInput;
+
+
+
         // double _convertedRight, _convertedLeft;
 
 

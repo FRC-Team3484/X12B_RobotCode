@@ -11,6 +11,7 @@
 
 #include "subsystems/Drivetrain.h"
 
+
 /**
  * This class is where the bulk of the robot should be declared.  Since
  * Command-based is a "declarative" paradigm, very little robot logic should
@@ -25,10 +26,15 @@ class RobotContainer {
   frc2::CommandPtr GetAutonomousCommand();
 
 
-  X13B_Drivetrain _drivetrain;
+  X13B_Drivetrain _drivetrain{
+    C_FX_BL_MASTER,
+    C_FX_BR_MASTER,
+    TRACKWIDTH
+  };
 
 
  private:
+    units::length::inch_t TRACKWIDTH = static_cast<units::length::inch_t>(28);
   // Replace with CommandPS4Controller or CommandJoystick if needed
   // frc2::CommandXboxController m_driverController{
   //     OperatorConstants::kDriverControllerPort};
