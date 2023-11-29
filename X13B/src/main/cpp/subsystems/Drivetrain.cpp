@@ -88,13 +88,15 @@ void X13B_Drivetrain::_InitMotor(WPI_TalonSRX *Motor, bool Invert) {
         Motor->SetInverted(Invert); 
         // 100% to -100% for a drivetrain
         //invert on one of them
-        Motor->SetNeutralMode(NeutralMode::Brake);
-        Motor->ConfigOpenloopRamp(0.5);
+        // Handle Limit Switches
         Motor->ConfigForwardSoftLimitEnable(false);
         Motor->ConfigForwardLimitSwitchSource(LimitSwitchSource_Deactivated,LimitSwitchNormal_Disabled);
         Motor->ConfigReverseSoftLimitEnable(false);
         Motor->ConfigReverseLimitSwitchSource(LimitSwitchSource_Deactivated,LimitSwitchNormal_Disabled);
+
         Motor->ConfigClosedloopRamp(0); //have code looping to hold a position (follow a path; hold a position)
+        Motor->SetNeutralMode(NeutralMode::Brake);
+        Motor->ConfigOpenloopRamp(0.5);
         // during tele-opp
         // Motor->ConfigSelectedFeedbackSensor();
         // Motor->SetSelectedSensorPosition();
