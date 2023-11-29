@@ -11,7 +11,7 @@ X13B_Drivetrain::X13B_Drivetrain(int CANID_Left, int CANID_Right, units::length:
     
     if (CANID_Left != C_DISABLED_CHANNEL){
         _Motor_Left_Control = new WPI_TalonSRX(CANID_Left);
-        _InitMotor(_Motor_Left_Control, true); // check which one should be positive
+        _InitMotor(_Motor_Left_Control, false); // check which one should be positive
 
 
 
@@ -25,7 +25,7 @@ X13B_Drivetrain::X13B_Drivetrain(int CANID_Left, int CANID_Right, units::length:
     }
     else {_Motor_Right_Control = NULL;}
 
-    _drive = new DifferentialDrive(*_Motor_Left_Control, *_Motor_Right_Control);
+    //_drive = new DifferentialDrive(*_Motor_Left_Control, *_Motor_Right_Control);
     _ddriveKinematics = new DifferentialDriveKinematics(trackWidth);
 
     // The following are already set in the _InitMotor
@@ -36,7 +36,7 @@ X13B_Drivetrain::X13B_Drivetrain(int CANID_Left, int CANID_Right, units::length:
 };
 
 X13B_Drivetrain::~X13B_Drivetrain() {
-    if(_drive != NULL) {delete _drive;}
+    //if(_drive != NULL) {delete _drive;}
     if(_Motor_Left_Control != NULL) {delete _Motor_Left_Control;}
     if(_Motor_Right_Control != NULL) {delete _Motor_Right_Control;}
     if(_ddriveKinematics != NULL) {delete _ddriveKinematics;}
@@ -53,28 +53,30 @@ void X13B_Drivetrain::Drive(bool EBrake) { // Percentage of Motor Output
     // Conversions are not normalized for negative values; must use median
 
     if (EBrake) {
-        SetBrakeMode();
+       SetBrakeMode();
         _Motor_Right_Control-> Set(ControlMode::PercentOutput, 0.0);
         _Motor_Left_Control-> Set(ControlMode::PercentOutput, 0.0);
     }
     else {
+       
         SetCoastMode();
-        _Motor_Right_Control-> Set(ControlMode::PercentOutput,this->wsInput.left);
-        _Motor_Left_Control-> Set(ControlMode::PercentOutput, this->wsInput.right);
+        _Motor_Right_Control-> Set(ControlMode::PercentOutput,this->wsInput.right);
+        _Motor_Left_Control-> Set(ControlMode::PercentOutput, this->wsInput.left);
+
     }
-    _drive->Feed();
-    _drive->FeedWatchdog();
-    _drive->Check();
-    _drive->CheckMotors();
+    //_drive->Feed();
+    //_drive->FeedWatchdog();
+    //_drive->Check();
+    //_drive->CheckMotors();
 };
 
 void X13B_Drivetrain::DriveArcade(double speed, double rotation, bool EBrake) {
 
 
 
-    if ((_drive != NULL) && (_Motor_Left_Control != NULL) && (_Motor_Right_Control != NULL)) {
+    if ((_Motor_Left_Control != NULL) && (_Motor_Right_Control != NULL)) {
         
-        wsInput = _drive -> ArcadeDriveIK(speed, rotation, false);
+        wsInput = DifferentialDrive::TankDriveIK(speed, rotation, false);
 
     }
     Drive(EBrake);
@@ -88,6 +90,10 @@ void X13B_Drivetrain::_InitMotor(WPI_TalonSRX *Motor, bool Invert) {
         //invert on one of them
         Motor->SetNeutralMode(NeutralMode::Brake);
         Motor->ConfigOpenloopRamp(0.5);
+        Motor->ConfigForwardSoftLimitEnable(false);
+        Motor->ConfigForwardLimitSwitchSource(LimitSwitchSource_Deactivated,LimitSwitchNormal_Disabled);
+        Motor->ConfigReverseSoftLimitEnable(false);
+        Motor->ConfigReverseLimitSwitchSource(LimitSwitchSource_Deactivated,LimitSwitchNormal_Disabled);
         Motor->ConfigClosedloopRamp(0); //have code looping to hold a position (follow a path; hold a position)
         // during tele-opp
         // Motor->ConfigSelectedFeedbackSensor();

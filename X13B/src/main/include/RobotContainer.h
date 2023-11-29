@@ -1,3 +1,4 @@
+
 // Copyright (c) FIRST and other WPILib contributors.
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
@@ -28,7 +29,7 @@ class RobotContainer {
 // usage of {} vs () is to avoid most vexing parse
   X13B_Drivetrain _drivetrain{
     C_FX_BL_MASTER,
-    C_FX_BR_MASTER,
+    C_FX_FR_MASTER,
     28_in
   };
 

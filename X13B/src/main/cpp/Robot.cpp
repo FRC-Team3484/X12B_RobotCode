@@ -64,8 +64,8 @@ void Robot::TeleopInit() {
 void Robot::TeleopPeriodic() 
 {
     // Y_Demand = F_Scale(-1.0, 1.0, Throttle_Range_Normal, GP1_Driver->GetRawAxis(C_DRIVER_FWD_REV_AXIS)); //->GetLeftY());
-    X_Demand = F_Scale(-1.0, 1.0, Throttle_Range_Normal, GP1_Driver->GetRawAxis(C_DRIVER_LFT_RHT_AXIS)); //->GetLeftX());
-    Z_Demand = F_Scale(-1.0, 1.0, Throttle_Range_Normal, GP1_Driver->GetRawAxis(C_DRIVER_ROTATE_AXIS)); //->GetRightX());
+    X_Demand = F_Scale(-1.0, 1.0, Throttle_Range_Normal, GP1_Driver->GetRawAxis(C_DRIVER_LEFT_AXIS)); //->GetLeftX());
+    Z_Demand = F_Scale(-1.0, 1.0, Throttle_Range_Normal, GP1_Driver->GetRawAxis(C_DRIVER_RIGHT_AXIS)); //->GetRightX());
 
     X13B._drivetrain.DriveArcade(F_Deadband(X_Demand, C_DRIVE_DEADBAND),
                                 F_Deadband(Z_Demand, C_DRIVE_DEADBAND),
