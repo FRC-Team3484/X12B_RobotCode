@@ -152,8 +152,8 @@ const double C_TILT_SCALE_FACTOR_POSN  	= -1.0 * (C_TILT_GEAR_RATIO / C_FALCON_E
 /**
  * Set The Driver mode
  */
-#define DRIVE_MODE_TANK
-//#define DRIVE_MODE_ARCADE
+//#define DRIVE_MODE_TANK
+#define DRIVE_MODE_ARCADE
 //#define DRIVE_MODE_CURVE
 //#define DRIVE_MODE_MECANUM
 //#define DRIVE_MODE_OCTOCANUM
@@ -170,7 +170,8 @@ const double C_TILT_SCALE_FACTOR_POSN  	= -1.0 * (C_TILT_GEAR_RATIO / C_FALCON_E
 #elif defined(DRIVE_MODE_ARCADE)
     #ifdef DRV_SCHEME_XBOX
         #define C_DRIVER_THROTTLE_AXIS      XBOX_LS_Y
-        #define C_DRIVER_STEER_AXIS         XBOX_RS_X //XBOX_LS_X (arcade)
+        #define C_DRIVER_STEER_AXIS         XBOX_LS_X
+        #define C_DRIVER_OCTO_SHIFT_BTN     XBOX_LB
     #elif defined(DRV_SCHEME_DS4)
         #define C_DRIVER_THROTTLE_AXIS      DS4_LS_Y
         #define C_DRIVER_STEER_AXIS         DS4_RS_X
