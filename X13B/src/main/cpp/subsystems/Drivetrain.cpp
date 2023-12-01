@@ -6,7 +6,6 @@ using namespace ctre::phoenix::motorcontrol;
 using namespace frc;
 using namespace SC;
 
-
 X13B_Drivetrain::X13B_Drivetrain(int CANID_Left, int CANID_Right, units::length::inch_t trackWidth){
     
     if (CANID_Left != C_DISABLED_CHANNEL){
@@ -27,7 +26,8 @@ X13B_Drivetrain::X13B_Drivetrain(int CANID_Left, int CANID_Right, units::length:
 
     //_drive = new DifferentialDrive(*_Motor_Left_Control, *_Motor_Right_Control);
     _ddriveKinematics = new DifferentialDriveKinematics(trackWidth);
-
+        //tracks how far the motor would move
+        //Auton: Kinematics is used to know the speed
     // The following are already set in the _InitMotor
     
     // if(_Motor_Left_Control != NULL) {_Motor_Left_Control->ConfigOpenloopRamp(0.5);}
@@ -85,16 +85,18 @@ void X13B_Drivetrain::DriveArcade(double speed, double rotation, bool EBrake) {
 
 void X13B_Drivetrain::_InitMotor(WPI_TalonSRX *Motor, bool Invert) {
     if(Motor != NULL) {
-        Motor->SetInverted(Invert); 
+        Motor->SetInverted(Invert);
         // 100% to -100% for a drivetrain
         //invert on one of them
-        Motor->SetNeutralMode(NeutralMode::Brake);
-        Motor->ConfigOpenloopRamp(0.5);
+        // Handle Limit Switches
         Motor->ConfigForwardSoftLimitEnable(false);
         Motor->ConfigForwardLimitSwitchSource(LimitSwitchSource_Deactivated,LimitSwitchNormal_Disabled);
         Motor->ConfigReverseSoftLimitEnable(false);
         Motor->ConfigReverseLimitSwitchSource(LimitSwitchSource_Deactivated,LimitSwitchNormal_Disabled);
+
         Motor->ConfigClosedloopRamp(0); //have code looping to hold a position (follow a path; hold a position)
+        Motor->SetNeutralMode(NeutralMode::Brake);
+        Motor->ConfigOpenloopRamp(0.5);
         // during tele-opp
         // Motor->ConfigSelectedFeedbackSensor();
         // Motor->SetSelectedSensorPosition();
