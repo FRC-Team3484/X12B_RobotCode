@@ -76,7 +76,7 @@ void X13B_Drivetrain::DriveArcade(double speed, double rotation, bool EBrake) {
 
     if ((_Motor_Left_Control != NULL) && (_Motor_Right_Control != NULL)) {
         
-        wsInput = DifferentialDrive::TankDriveIK(speed, rotation, false);
+        wsInput = DifferentialDrive::ArcadeDriveIK(speed, rotation, false);
 
     }
     Drive(EBrake);
