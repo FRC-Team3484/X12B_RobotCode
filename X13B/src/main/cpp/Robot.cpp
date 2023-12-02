@@ -3,78 +3,88 @@
 // the WPILib BSD license file in the root directory of this project.
 
 #include "Robot.h"
-#include "Constants.h"
-
-#include "FRC3484_Lib/utils/SC_Functions.h"
-
-#include "frc/PneumaticsModuleType.h"
-#include <frc/smartdashboard/SmartDashboard.h>
 
 #include <frc2/command/CommandScheduler.h>
-#include "ctre/phoenix/motorcontrol/Faults.h"
 
-#include "networktables/NetworkTableInstance.h"
-
-using namespace frc;
 using namespace SC;
+using namespace frc;
 
 void Robot::RobotInit() {
-// Clear out the network table
-	this->_nt_table = nt::NetworkTableInstance::GetDefault().GetTable("X13B");
-	// std::vector<std::string> entries = _nt_table->GetKeys();
-	// for(unsigned int i = 0; i < entries.size(); i++)
-	// {
-	// 	_nt_table->(entries.at(i));
-	// }
+  GP1_Driver = new XboxController(/*USB Port*/ C_DRIVER_USB);
 
-	// Initialize Controllers
-  GP1_Driver = new frc::XboxController(C_DRIVER_USB);
-  
-	_drivetrain = new X13B_Drivetrain(C_X22_TRACK_WIDTH,
-						std::make_tuple<int, int>(C_FX_LEFT_MASTER, C_FX_LEFT_SLAVE),
-						std::make_tuple<int, int>(C_FX_RIGHT_MASTER, C_FX_RIGHT_SLAVE));
-
+	Throttle_Range_High(-C_DRIVE_MAX_DEMAND_HIGH, C_DRIVE_MAX_DEMAND_HIGH);
+	Throttle_Range_Normal(-C_DRIVE_MAX_DEMAND_MID, C_DRIVE_MAX_DEMAND_MID);
+	Throttle_Range_Fine(-C_DRIVE_MAX_DEMAND_FINE, C_DRIVE_MAX_DEMAND_FINE);
 }
 
+/**
+ * This function is called every 20 ms, no matter the mode. Use
+ * this for items like diagnostics that you want to run during disabled,
+ * autonomous, teleoperated and test.
+ *
+ * <p> This runs after the mode specific periodic functions, but before
+ * LiveWindow and SmartDashboard integrated updating.
+ */
 void Robot::RobotPeriodic() {
   frc2::CommandScheduler::GetInstance().Run();
 }
 
+/**
+ * This function is called once each time the robot enters Disabled mode. You
+ * can use it to reset any subsystem information you want to clear when the
+ * robot is disabled.
+ */
 void Robot::DisabledInit() {}
 
 void Robot::DisabledPeriodic() {}
 
-void Robot::DisabledExit() {}
-
+/**
+ * This autonomous runs the autonomous command selected by your {@link
+ * RobotContainer} class.
+ */
 void Robot::AutonomousInit() {
-  m_autonomousCommand = m_container.GetAutonomousCommand();
-
-  if (m_autonomousCommand) {
-    m_autonomousCommand->Schedule();
-  }
 }
 
 void Robot::AutonomousPeriodic() {}
 
-void Robot::AutonomousExit() {}
+
 
 void Robot::TeleopInit() {
-  if (m_autonomousCommand) {
-    m_autonomousCommand->Cancel();
-  }
+  // This makes sure that the autonomous stops running when
+  // teleop starts running. If you want the autonomous to
+  // continue until interrupted by anothN/Aer command, remove
+  // this line or comment it out.
 }
 
-void Robot::TeleopPeriodic() {}
+/**
+ * This function is called periodically during operator control.
+ */
 
-void Robot::TeleopExit() {}
 
-void Robot::TestInit() {
-  frc2::CommandScheduler::GetInstance().CancelAll();
+void Robot::TeleopPeriodic() 
+{
+    // Y_Demand = F_Scale(-1.0, 1.0, Throttle_Range_Normal, GP1_Driver->GetRawAxis(C_DRIVER_FWD_REV_AXIS)); //->GetLeftY());
+    X_Demand = F_Scale(-1.0, 1.0, Throttle_Range_Normal, GP1_Driver->GetRawAxis(C_DRIVER_THROTTLE_AXIS)); //->GetLeftX());
+    Z_Demand = F_Scale(-1.0, 1.0, Throttle_Range_Normal, GP1_Driver->GetRawAxis(C_DRIVER_STEER_AXIS)); //->GetRightX());
+
+    X13B._drivetrain.DriveArcade(F_Deadband(X_Demand, C_DRIVE_DEADBAND),
+                                F_Deadband(Z_Demand, C_DRIVE_DEADBAND),
+                                GP1_Driver->GetRawButton(C_DRIVER_OCTO_SHIFT_BTN));
 }
-
+// /**
+//  * This function is called periodically during test mode.
+//  */
 void Robot::TestPeriodic() {}
 
-void Robot::TestExit() {}
+/**
+ * This function is called once when the robot is first started up.
+ */
+void Robot::SimulationInit() {}
+
+/**
+ * This function is called periodically whilst in simulation.
+ */
+void Robot::SimulationPeriodic() {}
 
 #ifndef RUNNING_FRC_TESTS
 int main() {
