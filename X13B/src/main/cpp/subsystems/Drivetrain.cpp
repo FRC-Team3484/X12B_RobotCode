@@ -97,6 +97,9 @@ void X13B_Drivetrain::_InitMotor(WPI_TalonSRX *Motor, bool Invert) {
         Motor->ConfigClosedloopRamp(0); //have code looping to hold a position (follow a path; hold a position)
         Motor->SetNeutralMode(NeutralMode::Brake);
         Motor->ConfigOpenloopRamp(0.5);
+        //Closed: Using sensors on motor; contains own PID; returns to controller
+        //Open: From Program
+
         // during tele-opp
         // Motor->ConfigSelectedFeedbackSensor();
         // Motor->SetSelectedSensorPosition();
@@ -114,3 +117,9 @@ void X13B_Drivetrain::SetCoastMode()
 	if(this->_Motor_Left_Control != NULL) { this->_Motor_Left_Control->SetNeutralMode(NeutralMode::Coast); }
 	if(this->_Motor_Right_Control != NULL) { this->_Motor_Right_Control->SetNeutralMode(NeutralMode::Coast); }
 }
+
+
+/*
+SetBrakeMode: When there is no controls to the robot it brakes
+SetCoastMode: WHen no output to motors, the motors continue and slow down to friction
+*/
