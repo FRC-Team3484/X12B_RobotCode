@@ -28,9 +28,9 @@ class RobotContainer {
 
 // usage of {} vs () is to avoid most vexing parse
   X13B_Drivetrain _drivetrain{
-    C_FX_BL_MASTER,
+    C_FX_BL_MASTER, // The left motor's id is 3
     C_FX_FR_MASTER,
-    28_in
+    28_in //trackwidth: distance for each motor
   };
 
 

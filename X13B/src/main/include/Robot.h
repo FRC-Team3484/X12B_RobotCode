@@ -38,7 +38,7 @@ class Robot : public frc::TimedRobot {
   SC::SC_Range<double> Throttle_Range_Fine = {-C_DRIVE_MAX_DEMAND_FINE, C_DRIVE_MAX_DEMAND_FINE};
   SC::SC_Range<double> Throttle_Range_High = {-C_DRIVE_MAX_DEMAND_HIGH, C_DRIVE_MAX_DEMAND_HIGH};
 
-  double X_Demand, Z_Demand;
+  double Y_Demand, Z_Demand;
 
   RobotContainer X13B;
 

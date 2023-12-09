@@ -11,7 +11,7 @@ using namespace frc;
 
 void Robot::RobotInit() {
   GP1_Driver = new XboxController(/*USB Port*/ C_DRIVER_USB);
-
+  // Craetes the controller; sets port
 	Throttle_Range_High(-C_DRIVE_MAX_DEMAND_HIGH, C_DRIVE_MAX_DEMAND_HIGH);
 	Throttle_Range_Normal(-C_DRIVE_MAX_DEMAND_MID, C_DRIVE_MAX_DEMAND_MID);
 	Throttle_Range_Fine(-C_DRIVE_MAX_DEMAND_FINE, C_DRIVE_MAX_DEMAND_FINE);
@@ -64,10 +64,10 @@ void Robot::TeleopInit() {
 void Robot::TeleopPeriodic() 
 {
     // Y_Demand = F_Scale(-1.0, 1.0, Throttle_Range_Normal, GP1_Driver->GetRawAxis(C_DRIVER_FWD_REV_AXIS)); //->GetLeftY());
-    X_Demand = F_Scale(-1.0, 1.0, Throttle_Range_Normal, GP1_Driver->GetRawAxis(C_DRIVER_THROTTLE_AXIS)); //->GetLeftX());
+    Y_Demand = F_Scale(-1.0, 1.0, Throttle_Range_Normal, GP1_Driver->GetRawAxis(C_DRIVER_THROTTLE_AXIS)); //->GetLeftX());
     Z_Demand = F_Scale(-1.0, 1.0, Throttle_Range_Normal, GP1_Driver->GetRawAxis(C_DRIVER_STEER_AXIS)); //->GetRightX());
 
-    X13B._drivetrain.DriveArcade(F_Deadband(X_Demand, C_DRIVE_DEADBAND),
+    X13B._drivetrain.DriveArcade(F_Deadband(Y_Demand, C_DRIVE_DEADBAND),
                                 F_Deadband(Z_Demand, C_DRIVE_DEADBAND),
                                 GP1_Driver->GetRawButton(C_DRIVER_OCTO_SHIFT_BTN));
 }
