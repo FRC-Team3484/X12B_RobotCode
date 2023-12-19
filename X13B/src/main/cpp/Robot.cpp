@@ -4,17 +4,16 @@
 
 #include "Robot.h"
 
-#include <frc2/command/CommandScheduler.h>
+using namespace AutonNames;
 
-using namespace SC;
 using namespace frc;
 
 void Robot::RobotInit() {
-  GP1_Driver = new XboxController(/*USB Port*/ C_DRIVER_USB);
-
-	Throttle_Range_High(-C_DRIVE_MAX_DEMAND_HIGH, C_DRIVE_MAX_DEMAND_HIGH);
-	Throttle_Range_Normal(-C_DRIVE_MAX_DEMAND_MID, C_DRIVE_MAX_DEMAND_MID);
-	Throttle_Range_Fine(-C_DRIVE_MAX_DEMAND_FINE, C_DRIVE_MAX_DEMAND_FINE);
+  //Chooser; Give Value and Display
+  _auton_chooser.SetDefaultOption(AUTON_NONE, AUTON_NONE);
+  _auton_chooser.AddOption(AUTON_1, AUTON_1);
+  _auton_chooser.AddOption(AUTON_2, AUTON_2);
+  frc::SmartDashboard::PutData("Autons", &_auton_chooser);
 }
 
 /**
@@ -43,6 +42,22 @@ void Robot::DisabledPeriodic() {}
  * RobotContainer} class.
  */
 void Robot::AutonomousInit() {
+    _auton_selected = _auton_chooser.GetSelected();
+
+  if (_auton_selected == AUTON_NONE) {
+    fmt::print("No Auton Selected");
+    //_auton_command = _do_nothing_command.ToPtr();
+  } if (_auton_selected == AUTON_1) {
+    fmt::print("Auton 1 Selected");
+    //_auton_command = _auton1_command.ToPtr();
+  } else if (_auton_selected == AUTON_2) {
+    fmt::print("Auton 2 Selected");
+    //_auton_command = _auton2_command.ToPtr();
+  }
+
+  if (_auton_command) {
+    _auton_command->Schedule();
+  }
 }
 
 void Robot::AutonomousPeriodic() {}
@@ -54,6 +69,12 @@ void Robot::TeleopInit() {
   // teleop starts running. If you want the autonomous to
   // continue until interrupted by anothN/Aer command, remove
   // this line or comment it out.
+
+  if (_auton_command) {
+    _auton_command->Cancel();
+  }
+  _drive_command.Schedule();
+  _shooter_command.Schedule();
 }
 
 /**
@@ -61,16 +82,7 @@ void Robot::TeleopInit() {
  */
 
 
-void Robot::TeleopPeriodic() 
-{
-    // Y_Demand = F_Scale(-1.0, 1.0, Throttle_Range_Normal, GP1_Driver->GetRawAxis(C_DRIVER_FWD_REV_AXIS)); //->GetLeftY());
-    X_Demand = F_Scale(-1.0, 1.0, Throttle_Range_Normal, GP1_Driver->GetRawAxis(C_DRIVER_THROTTLE_AXIS)); //->GetLeftX());
-    Z_Demand = F_Scale(-1.0, 1.0, Throttle_Range_Normal, GP1_Driver->GetRawAxis(C_DRIVER_STEER_AXIS)); //->GetRightX());
-
-    X13B._drivetrain.DriveArcade(F_Deadband(X_Demand, C_DRIVE_DEADBAND),
-                                F_Deadband(Z_Demand, C_DRIVE_DEADBAND),
-                                GP1_Driver->GetRawButton(C_DRIVER_OCTO_SHIFT_BTN));
-}
+void Robot::TeleopPeriodic() {}
 // /**
 //  * This function is called periodically during test mode.
 //  */
