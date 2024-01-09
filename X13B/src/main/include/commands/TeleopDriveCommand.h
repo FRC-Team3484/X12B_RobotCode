@@ -18,10 +18,5 @@ class TeleopDriveCommand
         private:
             DrivetrainSubsystem* _drivetrain_subsystem;
             OI* _oi;
-
-
     };
-
-
-
 #endif

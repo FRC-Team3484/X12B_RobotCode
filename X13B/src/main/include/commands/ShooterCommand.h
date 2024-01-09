@@ -26,7 +26,4 @@ class ShooterCommand //Import the command helper for setting up commands
         frc::Timer _timer;
 
 };
-
-
-
 #endif
