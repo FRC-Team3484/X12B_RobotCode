@@ -28,7 +28,7 @@ class X13B_Drivetrain {
 
     private:
         ctre::phoenix::motorcontrol::can::WPI_TalonSRX *_Motor_Left_Control, *_Motor_Right_Control;
-        frc::DifferentialDriveKinematics  *_ddriveKinematics;
+        // frc::DifferentialDriveKinematics  *_ddriveKinematics;
         //frc::DifferentialDrive *_drive;
         frc::DifferentialDrive::WheelSpeeds wsInput;
 
