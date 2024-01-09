@@ -25,7 +25,7 @@ X13B_Drivetrain::X13B_Drivetrain(int CANID_Left, int CANID_Right, units::length:
     else {_Motor_Right_Control = NULL;}
 
     //_drive = new DifferentialDrive(*_Motor_Left_Control, *_Motor_Right_Control);
-    _ddriveKinematics = new DifferentialDriveKinematics(trackWidth);
+    // _ddriveKinematics = new DifferentialDriveKinematics(trackWidth);
         //tracks how far the motor would move
         //Auton: Kinematics is used to know the speed
     // The following are already set in the _InitMotor
@@ -39,7 +39,7 @@ X13B_Drivetrain::~X13B_Drivetrain() {
     //if(_drive != NULL) {delete _drive;}
     if(_Motor_Left_Control != NULL) {delete _Motor_Left_Control;}
     if(_Motor_Right_Control != NULL) {delete _Motor_Right_Control;}
-    if(_ddriveKinematics != NULL) {delete _ddriveKinematics;}
+    // if(_ddriveKinematics != NULL) {delete _ddriveKinematics;}
 };
 
 // gets called in the DriveArcade
