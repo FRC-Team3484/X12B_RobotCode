@@ -32,5 +32,8 @@ void ShooterCommand::Stop() {
     _shooter_subsystem->RetractFeedPiston();
     _shooter_subsystem->Pitch(0);
     _shooter_subsystem->Spool(0);
+
+    _timer.Stop();
+    _timer.Reset();
     
 }

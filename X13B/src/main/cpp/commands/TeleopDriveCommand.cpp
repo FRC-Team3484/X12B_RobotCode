@@ -13,7 +13,6 @@ void TeleopDriveCommand::Execute() {
 
 void TeleopDriveCommand::End(bool interrupted){
     _drivetrain_subsystem->ArcadeDrive(0,0);
-
 }
 
 

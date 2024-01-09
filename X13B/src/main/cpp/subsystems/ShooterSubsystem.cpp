@@ -28,7 +28,14 @@ void ShooterSubsystem::ExtendFeedPiston() {
     _feed_piston.Set(true);
 }
 
+bool ShooterSubsystem::AtMinPitch() {return _pitch_limit_switch_low.Get();}
+bool ShooterSubsystem::AtMaxPitch() {return _pitch_limit_switch_high.Get();}
+
 void ShooterSubsystem::RetractFeedPiston() {
     _feed_piston.Set(false);
+}
+
+void ShooterSubsystem::Spool(double power) {
+    _shoot_motor_1.Set(ControlMode::PercentOutput, power);
 }
 

@@ -37,14 +37,16 @@ namespace AutonNames {
 }
 
 namespace ShooterConstants {
-    constexpr int PITCH_MOTOR_PORT = 4;
-    constexpr int PITCH_LIMIT_SWITCH_LOW = 0;
+    constexpr int PITCH_MOTOR_PORT = 10;
+
+    //Analog In
+    constexpr int PITCH_LIMIT_SWITCH_LOW = 2;
     constexpr int PITCH_LIMIT_SWITCH_HIGH = 1;
 
     constexpr int SHOOT_MOTOR_PORT_1 = 0;
     constexpr int SHOOT_MOTOR_PORT_2 = 1;
 
-    constexpr int FEED_PISTON_PORT = 3;
+    constexpr int FEED_PISTON_PORT = 7;
 
     constexpr units::second_t PISTON_EXTEND_TIME = 0.5_s;
     constexpr units::second_t PISTON_RETRACT_TIME = 1.0_s;

@@ -3,6 +3,7 @@
 // the WPILib BSD license file in the root directory of this project.
 
 #include "Robot.h"
+#include <frc/smartdashboard/SmartDashboard.h>
 
 using namespace AutonNames;
 
@@ -26,10 +27,12 @@ void Robot::RobotInit() {
  */
 void Robot::RobotPeriodic() {
   frc2::CommandScheduler::GetInstance().Run();
-}
+  frc::SmartDashboard::PutBoolean("Limit Switch Max", _shooter_subsystem.AtMaxPitch());
+  frc::SmartDashboard::PutBoolean("Limit Switch Min", _shooter_subsystem.AtMinPitch());
 
+}
 /**
- * This function is called once each time the robot enters Disabled mode. You
+ This function is called once each time the robot enters Disabled mode. You
  * can use it to reset any subsystem information you want to clear when the
  * robot is disabled.
  */
