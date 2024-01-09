@@ -14,5 +14,3 @@ void DrivetrainSubsystem::Periodic() {}
 void DrivetrainSubsystem::ArcadeDrive(double speed, double rotation){
     _drivetrain.ArcadeDrive(speed, rotation);
 }
-
-
