@@ -11,6 +11,8 @@ X13B_Drivetrain::X13B_Drivetrain(int CANID_Left, int CANID_Right, units::length:
     if (CANID_Left != C_DISABLED_CHANNEL){
         _Motor_Left_Control = new WPI_TalonSRX(CANID_Left);
         _InitMotor(_Motor_Left_Control, false); // check which one should be positive
+        _Motor_Left_Control->SetNeutralMode(ctre::phoenix::motorcontrol::Brake);
+        _Motor_Right_Control->SetNeutralMode(ctre::phoenix::motorcontrol::Brake);
 
 
 
